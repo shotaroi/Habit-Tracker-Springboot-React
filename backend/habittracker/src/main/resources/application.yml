@@ -1,0 +1,23 @@
+server: 
+  port: 8080
+
+spring: 
+  datasource: 
+    url: jdbc:postgresql://localhost:5432/habit_tracker
+    username: habit_user
+    password: habit_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  jwt:
+    secret: change_me_to_a_long_random_secret_key_32_chars_min
+    expiration-ms: 3600000
+
+cors:
+  allowed-origins: http://localhost:5173
