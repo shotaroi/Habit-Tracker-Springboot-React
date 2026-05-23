@@ -35,7 +35,7 @@ public class Habit {
     private String name;
 
     @Column(nullable = false, length = 32)
-    private String fequency;
+    private String frequency;
 
     @Column(name = "target_days")
     private Integer targetDays;

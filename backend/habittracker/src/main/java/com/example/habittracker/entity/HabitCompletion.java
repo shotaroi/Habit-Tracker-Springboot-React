@@ -28,7 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Habit_Completion {
+public class HabitCompletion {
     
     @Id
     @GeneratedValue(strategy = GenerationType. IDENTITY)
