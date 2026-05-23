@@ -1,6 +1,7 @@
 package com.example.habittracker.entity;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,10 @@ public class Habit_Completion {
     @JoinColumn(name = "habit_id", nullable = false)
     private Habit habit;
 
-    @Column(name = "completion_date", nullable = false, updatable = false)
+    @Column(name = "completion_date", nullable = false)
+    private LocalDate date;
+
+    @Column(name = "completion_at", nullable = false, updatable = false)
     private Instant completedAt;
 
     @PrePersist
