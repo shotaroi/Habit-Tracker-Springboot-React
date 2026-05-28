@@ -1,10 +1,14 @@
-package com.example.habittracker.auth.dto;
+package com.example.habittracker.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.habittracker.auth.dto.AuthResponse;
+import com.example.habittracker.auth.dto.LoginRequest;
+import com.example.habittracker.auth.dto.RegisterRequest;
+import com.example.habittracker.auth.dto.AuthResponse.AuthUser;
 import com.example.habittracker.entity.User;
 import com.example.habittracker.repository.UserRepository;
 import com.example.habittracker.security.JwtService;

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
 import com.example.habittracker.auth.dto.AuthResponse;
-import com.example.habittracker.auth.dto.AuthService;
 import com.example.habittracker.auth.dto.LoginRequest;
 import com.example.habittracker.auth.dto.RegisterRequest;
 

@@ -1,6 +1,7 @@
 package com.example.habittracker.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.habittracker.entity.User;
 import com.example.habittracker.repository.UserRepository;
 
-import io.jsonwebtoken.lang.Collections;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
             if (jwtService.isTokenValid(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
