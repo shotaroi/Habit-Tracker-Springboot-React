@@ -1,4 +1,4 @@
-package com.example.habittracker.dto;
+package com.example.habittracker.habit.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
