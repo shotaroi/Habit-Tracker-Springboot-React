@@ -59,7 +59,7 @@ public class HabitController {
 
     private Long extractUserId(Principal principal) {
         if (principal == null || principal.getName() == null) {
-            throw new UnsupportedOperationException("Implement user-id extraction from JWT principal");
+            throw new IllegalStateException("Unauthenticated request");
         }
 
         User user = userRepository.findByEmail(principal.getName())
