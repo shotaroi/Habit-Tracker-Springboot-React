@@ -2,17 +2,14 @@ package com.example.habittracker.habit;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.habittracker.entity.User;
 import com.example.habittracker.habit.dto.CreateHabitRequest;
 import com.example.habittracker.habit.dto.HabitResponse;
-import com.example.habittracker.repository.UserRepository;
 import com.example.habittracker.security.AuthUserPrincipal;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 

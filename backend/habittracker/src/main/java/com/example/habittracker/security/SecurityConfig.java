@@ -1,8 +1,5 @@
 package com.example.habittracker.security;
 
-import com.example.habittracker.auth.AuthController;
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
