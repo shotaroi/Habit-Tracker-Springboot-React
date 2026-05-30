@@ -30,11 +30,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class HabitController {
     
     private final HabitService habitService;
-    private final UserRepository userRepository;
 
-    public HabitController(HabitService habitService, UserRepository userRepository) {
+    public HabitController(HabitService habitService) {
         this.habitService = habitService;
-        this.userRepository = userRepository;
     }
 
     @PostMapping
@@ -44,27 +42,14 @@ public class HabitController {
     }
 
     @GetMapping
-    public List<HabitResponse> list(Principal principal) {
-        Long userId = extractUserId(principal);
-        return habitService.listActive(userId);
+    public List<HabitResponse> list(@AuthenticationPrincipal AuthUserPrincipal user) {
+        return habitService.listActive(user.userId());
     }
 
     @PostMapping("/{habitId}/complete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void complete(@PathVariable Long habitId, @RequestParam(required = false) LocalDate date, Principal principal) {
-        Long userId = extractUserId(principal);
-        habitService.complete(userId, habitId, date == null ? LocalDate.now() : date);
-    }
-
-    private Long extractUserId(Principal principal) {
-        if (principal == null || principal.getName() == null) {
-            throw new IllegalStateException("Unauthenticated request");
-        }
-
-        User user = userRepository.findByEmail(principal.getName())
-        .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
-
-        return user.getId();
+    public void complete(@PathVariable Long habitId, @RequestParam(required = false) LocalDate date, @AuthenticationPrincipal AuthUserPrincipal user) {
+        habitService.complete(user.userId(), habitId, date == null ? LocalDate.now() : date);
     }
     
 }
