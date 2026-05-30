@@ -6,9 +6,11 @@ import com.example.habittracker.entity.User;
 import com.example.habittracker.habit.dto.CreateHabitRequest;
 import com.example.habittracker.habit.dto.HabitResponse;
 import com.example.habittracker.repository.UserRepository;
+import com.example.habittracker.security.AuthUserPrincipal;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -37,9 +39,8 @@ public class HabitController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HabitResponse create(@Valid @RequestBody CreateHabitRequest request, Principal principal) {
-        Long userId = extractUserId(principal);
-        return habitService.create(userId, request);
+    public HabitResponse create(@Valid @RequestBody CreateHabitRequest request, @AuthenticationPrincipal AuthUserPrincipal user) {
+        return habitService.create(user.userId(), request);
     }
 
     @GetMapping
@@ -50,9 +51,7 @@ public class HabitController {
 
     @PostMapping("/{habitId}/complete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void complete(@PathVariable Long habitId,
-                         @RequestParam(required = false) LocalDate date,
-                         Principal principal) {
+    public void complete(@PathVariable Long habitId, @RequestParam(required = false) LocalDate date, Principal principal) {
         Long userId = extractUserId(principal);
         habitService.complete(userId, habitId, date == null ? LocalDate.now() : date);
     }

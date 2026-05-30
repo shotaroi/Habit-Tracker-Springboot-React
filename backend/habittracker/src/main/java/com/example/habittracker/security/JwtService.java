@@ -68,4 +68,11 @@ public class JwtService {
             .parseSignedClaims(token)
             .getPayload();
     }
+
+    public Long extractUserId(String token) {
+        Object uid = parseClaims(token).get("uid");
+        if (uid instanceof Integer i) return i.longValue();
+        if (uid instanceof Long l) return l;
+        throw new IllegalStateException("Invalid uid claim");
+    }
 }
