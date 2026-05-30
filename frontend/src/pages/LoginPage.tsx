@@ -2,6 +2,21 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import type { ComponentProps } from 'react'
+import axios from 'axios'
+
+type FormSubmitHandler = NonNullable<ComponentProps<'form'>['onSubmit']>
+
+function getApiErrorMessage(err: unknown, fallback: string): string {
+    if (axios.isAxiosError(err)) {
+        const data = err.response?.data as { message?: string; error?: string} | undefined
+        if (typeof data?.message === 'string' && data.message.trim()) return data.message
+        if (typeof data?.error === 'string' && data.error.trim())  return data.error
+
+        if (err.response?.status === 401) return 'Invalid email or password'
+        if (err.response?.status === 400) return 'Please check email/password format'
+    }
+    return fallback
+}
 
 export default function LoginPage() {
     const navigate = useNavigate()
