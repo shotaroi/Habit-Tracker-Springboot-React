@@ -22,7 +22,8 @@ export default function RegisterPage() {
         try {
             await register({ email, password})
             navigate('/', { replace: true})
-        } catch {
+        } catch (err) {
+            console.error(err)
             setError('Could not create account')
         } finally {
             setLoading(false)
