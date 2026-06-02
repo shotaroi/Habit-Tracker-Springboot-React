@@ -43,6 +43,15 @@ public class HabitController {
         return habitService.listActive(user.userId());
     }
 
+    @GetMapping("/completed")
+    public List<Long> completed(
+        @RequestParam(required = false) 
+        LocalDate date, @AuthenticationPrincipal
+        AuthUserPrincipal user) {
+            LocalDate targetDate = (date == null) ? LocalDate.now() : date;
+            return habitService.completedHabits(user.userId(), targetDate);
+    } 
+
     @PostMapping("/{habitId}/complete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void complete(@PathVariable Long habitId, @RequestParam(required = false) LocalDate date, @AuthenticationPrincipal AuthUserPrincipal user) {

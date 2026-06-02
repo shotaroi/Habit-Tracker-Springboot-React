@@ -64,6 +64,13 @@ public class HabitService {
             completionRepository.save(c);
     }
 
+    public List<Long> completedHabits(Long userId, LocalDate date) {
+        return completionRepository.findByHabitUserIdAndDate(userId, date)
+        .stream()
+        .map(c -> c.getHabit().getId())
+        .toList();
+    }
+
     private HabitResponse toResponse(Habit h) {
         return new HabitResponse(h.getId(), h.getName(), h.getFrequency(), h.getTargetDays(), h.isArchived(), h.getCreatedAt());
     }

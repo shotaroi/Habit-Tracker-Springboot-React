@@ -37,7 +37,7 @@ export default function RegisterPage() {
             navigate('/', { replace: true})
         } catch (err) {
             console.error(err)
-            setError('Could not create account')
+            setError(getApiErrorMessage(err, 'Could not create account'))
         } finally {
             setLoading(false)
         }

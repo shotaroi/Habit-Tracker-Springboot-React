@@ -27,7 +27,6 @@ export default function LoginPage() {
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
-    type FormSubmitHandler = NonNullable<ComponentProps<'form'>['onSubmit']>
     
     const onSubmit: FormSubmitHandler = async (e) => {
         e.preventDefault()
@@ -36,8 +35,8 @@ export default function LoginPage() {
         try {
             await login({ email, password})
             navigate('/', { replace: true})
-        } catch {
-            setError('Invalid email or password')
+        } catch (err) {
+            setError(getApiErrorMessage(err,'Invalid email or password'))
         } finally {
             setLoading(false)
         }

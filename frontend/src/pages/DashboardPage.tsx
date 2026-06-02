@@ -30,6 +30,7 @@ export default function DashboardPage() {
     const { user, logout } = useAuth()
 
     const [habits, setHabits] = useState<Habit[]>([])
+    const [completedToday, setCompletedToday] = useState<Set<number>>(new Set())
     const [progress, setProgress] = useState<WeeklyProgressResponse | null>(null)
     const [habitName, setHabitName] = useState('')
     const [loading, setLoading] = useState(false)
@@ -39,12 +40,14 @@ export default function DashboardPage() {
         setLoading(true)
         setError(null)
         try {
-            const [habitsRes, progressRes] = await Promise.all([
+            const [habitsRes, progressRes, completedRes] = await Promise.all([
                 api.get<Habit[]>('/api/habits'),
                 api.get<WeeklyProgressResponse>('/api/progress/weekly'),
+                api.get<number[]>('/api/habits/completed'),
             ])
             setHabits(habitsRes.data)
             setProgress(progressRes.data)
+            setCompletedToday(new Set(completedRes.data))
         } catch {
             setError('Failed to load dashboard data')
         } finally {
@@ -77,6 +80,7 @@ export default function DashboardPage() {
     const onCompleteHabit = async (habitId: number) => {
         try {
             await api.post(`/api/habits/${habitId}/complete`)
+            setCompletedToday((prev) => new Set(prev).add(habitId))
             await loadData()
         } catch {
             setError('Failed to complete habit')
@@ -115,12 +119,17 @@ export default function DashboardPage() {
                     <p>No habits yet</p>
                 ) : (
                     <ul>
-                      {habits.map((habit) => (
-                        <li key={habit.id} className='row' style={{marginBottom: '0.5rem'}}>
-                            <span>{habit.name}</span>
-                            <button onClick={() => onCompleteHabit(habit.id)}>Complete today</button>
-                        </li>
-                      ))}
+                      {habits.map((habit) => {
+                        const done = completedToday.has(habit.id)
+                        return (
+                            <li key={habit.id} className='row' style={{ marginBottom: '0.5rem'}}>
+                                <span>{habit.name}</span>
+                                <button disabled={done} onClick={() => onCompleteHabit(habit.id)}>
+                                    {done ? 'Completed today' : 'Complete today'} 
+                                </button>    
+                            </li>
+                        )
+                    })}
                     </ul>
                 )}
             </section>

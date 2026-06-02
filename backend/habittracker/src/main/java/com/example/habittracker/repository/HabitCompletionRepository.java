@@ -18,4 +18,5 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
 
     List<HabitCompletion> findByHabitUserIdAndDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
 
+    List<HabitCompletion> findByHabitUserIdAndDate(Long userId, LocalDate date);
 }
