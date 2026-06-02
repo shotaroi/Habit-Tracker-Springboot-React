@@ -57,5 +57,12 @@ public class HabitController {
     public void complete(@PathVariable Long habitId, @RequestParam(required = false) LocalDate date, @AuthenticationPrincipal AuthUserPrincipal user) {
         habitService.complete(user.userId(), habitId, date == null ? LocalDate.now() : date);
     }
-    
+
+    @PostMapping("/{habitId}/archive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void archive(
+        @PathVariable Long habitId,
+        @AuthenticationPrincipal AuthUserPrincipal user) {
+            habitService.archive(user.userId(), habitId);
+        }
 }

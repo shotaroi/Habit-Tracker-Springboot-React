@@ -74,4 +74,12 @@ public class HabitService {
     private HabitResponse toResponse(Habit h) {
         return new HabitResponse(h.getId(), h.getName(), h.getFrequency(), h.getTargetDays(), h.isArchived(), h.getCreatedAt());
     }
+
+    public void archive(Long userId, Long habitId) {
+        Habit habit = habitRepository.findByIdAndUserId(habitId, userId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found"));
+
+        habit.setArchived(true);
+        habitRepository.save(habit);
+    }
 }

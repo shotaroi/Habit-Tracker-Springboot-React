@@ -87,6 +87,15 @@ export default function DashboardPage() {
         }
     }
 
+    const onArchivedHabit = async (habitId: number) => {
+        try {
+            await api.post(`/api/habits/${habitId}/archive`)
+            await loadData()
+        } catch {
+            setError('Failed to archive habit')
+        }
+    }
+
     return (
         <main className='page'>
             <header className='row' style={{ marginBottom: '1rem'}}>
@@ -127,6 +136,7 @@ export default function DashboardPage() {
                                 <button disabled={done} onClick={() => onCompleteHabit(habit.id)}>
                                     {done ? 'Completed today' : 'Complete today'} 
                                 </button>    
+                                <button onClick={() => onArchivedHabit(habit.id)}>Archive</button>
                             </li>
                         )
                     })}
