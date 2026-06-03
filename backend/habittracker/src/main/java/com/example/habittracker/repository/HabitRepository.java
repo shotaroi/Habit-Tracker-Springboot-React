@@ -10,4 +10,6 @@ import com.example.habittracker.entity.Habit;
 public interface HabitRepository extends JpaRepository<Habit, Long>{
     List<Habit> findByUserIdAndArchivedFalse(Long userId);
     Optional<Habit> findByIdAndUserId(Long id, Long userId);
+
+    List<Habit> findByUserIdAndArchivedTrue(Long userId);
 }

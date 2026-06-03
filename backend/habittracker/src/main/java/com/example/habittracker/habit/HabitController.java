@@ -61,8 +61,21 @@ public class HabitController {
     @PostMapping("/{habitId}/archive")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void archive(
-        @PathVariable Long habitId,
+        @PathVariable Long habitId, 
         @AuthenticationPrincipal AuthUserPrincipal user) {
             habitService.archive(user.userId(), habitId);
+    }
+
+    @GetMapping("/archived")
+    public List<HabitResponse> listArchived(@AuthenticationPrincipal AuthUserPrincipal user) {
+        return habitService.listArchived(user.userId());
+    }
+
+    @PostMapping("/{habitId}/unarchive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unarchive(
+        @PathVariable Long habitId,
+        @AuthenticationPrincipal AuthUserPrincipal user) {
+            habitService.unarchive(user.userId(), habitId);
         }
 }

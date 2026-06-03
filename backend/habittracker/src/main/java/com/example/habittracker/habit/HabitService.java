@@ -82,4 +82,19 @@ public class HabitService {
         habit.setArchived(true);
         habitRepository.save(habit);
     }
+
+    public List<HabitResponse> listArchived(Long userId) {
+        return habitRepository.findByUserIdAndArchivedTrue(userId)
+        .stream()
+        .map(this::toResponse)
+        .toList();
+    }
+
+    public void unarchive(Long userId, Long habitId) {
+        Habit habit = habitRepository.findByIdAndUserId(habitId, habitId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found"));
+
+        habit.setArchived(false);
+        habitRepository.save(habit);
+    }
 }

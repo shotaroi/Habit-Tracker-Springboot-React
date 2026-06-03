@@ -35,17 +35,21 @@ export default function DashboardPage() {
     const [habitName, setHabitName] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active')
+    const [archivedHabits, setArchivedHabits] = useState<Habit[]>([])
 
     const loadData = async () => {
         setLoading(true)
         setError(null)
         try {
-            const [habitsRes, progressRes, completedRes] = await Promise.all([
+            const [habitsRes, archivedRes, progressRes, completedRes] = await Promise.all([
                 api.get<Habit[]>('/api/habits'),
+                api.get<Habit[]>('/api/habits/archived'),
                 api.get<WeeklyProgressResponse>('/api/progress/weekly'),
                 api.get<number[]>('/api/habits/completed'),
             ])
             setHabits(habitsRes.data)
+            setArchivedHabits(archivedRes.data)
             setProgress(progressRes.data)
             setCompletedToday(new Set(completedRes.data))
         } catch {
@@ -96,6 +100,15 @@ export default function DashboardPage() {
         }
     }
 
+    const onUnarchiveHabit = async (habitId: number) => {
+        try {
+            await api.post(`/api/habits/${habitId}/unarchive`)
+            await loadData()
+        } catch {
+            setError('Failed to unarchive habit')
+        }
+    }
+
     return (
         <main className='page'>
             <header className='row' style={{ marginBottom: '1rem'}}>
@@ -122,6 +135,17 @@ export default function DashboardPage() {
 
             <section className='card'>
                 <h2>Your Habits</h2>
+
+                <div className='row' style={{ justifyContent: 'flex-start', marginBottom: '0.75rem'}}>
+                    <button onClick={() => setActiveTab('active')} disabled={activeTab === 'active'}>
+                        Active
+                    </button>
+                    <button onClick={() => setActiveTab('archived')} disabled={activeTab === 'archived'}>
+                        Archived
+                    </button>
+
+                </div>
+                
                 {loading ? (
                     <p>Loading...</p>
                 ) : habits.length === 0 ? (
