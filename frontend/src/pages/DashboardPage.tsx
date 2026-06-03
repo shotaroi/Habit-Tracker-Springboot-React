@@ -91,7 +91,7 @@ export default function DashboardPage() {
         }
     }
 
-    const onArchivedHabit = async (habitId: number) => {
+    const onArchiveHabit = async (habitId: number) => {
         try {
             await api.post(`/api/habits/${habitId}/archive`)
             await loadData()
@@ -148,7 +148,8 @@ export default function DashboardPage() {
                 
                 {loading ? (
                     <p>Loading...</p>
-                ) : habits.length === 0 ? (
+                ) : activeTab === 'active' ? (
+                  habits.length === 0 ? (
                     <p>No habits yet</p>
                 ) : (
                     <ul>
@@ -160,12 +161,24 @@ export default function DashboardPage() {
                                 <button disabled={done} onClick={() => onCompleteHabit(habit.id)}>
                                     {done ? 'Completed today' : 'Complete today'} 
                                 </button>    
-                                <button onClick={() => onArchivedHabit(habit.id)}>Archive</button>
+                                <button onClick={() => onArchiveHabit(habit.id)}>Archive</button>
                             </li>
                         )
                     })}
                     </ul>
-                )}
+                )
+            ) : archivedHabits.length === 0 ? (
+                <p>No archived habits</p>
+            ) : (
+                <ul>
+                    {archivedHabits.map((habit) => (
+                        <li key={habit.id} className='row' style={{ marginBottom: '0.5rem'}}>
+                          <span>{habit.name}</span>     
+                          <button onClick={() => onUnarchiveHabit(habit.id)}>Unarchive</button>
+                        </li>
+                    ))}
+                </ul>
+            )}
             </section>
 
             <section className='card'>

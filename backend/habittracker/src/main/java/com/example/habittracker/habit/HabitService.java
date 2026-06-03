@@ -91,7 +91,7 @@ public class HabitService {
     }
 
     public void unarchive(Long userId, Long habitId) {
-        Habit habit = habitRepository.findByIdAndUserId(habitId, habitId)
+        Habit habit = habitRepository.findByIdAndUserId(habitId, userId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found"));
 
         habit.setArchived(false);
